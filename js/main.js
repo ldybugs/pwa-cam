@@ -12,14 +12,17 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+var camMode = "user";
 
 // configurando as constraintes do video stream
-var constraints = { video: { facingMode: "user" }, audio: false };
+var constraints = { video: { facingMode: camMode }, audio: false };
 // capturando os elementos em tela
 const cameraView = document.querySelector("#camera--view"),
   cameraOutput = document.querySelector("#camera--output"),
   cameraSensor = document.querySelector("#camera--sensor"),
-  cameraTrigger = document.querySelector("#camera--trigger")
+  cameraTrigger = document.querySelector("#camera--trigger"),
+  cameraVirar = document.querySelector("#camera--virar")
+
 
 //Estabelecendo o acesso a camera e inicializando a visualização
 function cameraStart() {
@@ -42,5 +45,18 @@ cameraTrigger.onclick = function () {
   cameraOutput.src = cameraSensor.toDataURL("image/webp");
   cameraOutput.classList.add("taken");
 };
+
+cameraVirar.onclick = function () {
+  stopMediaTracks(cameraView.srcObject);
+  camMode = camMode === "user" ? "environment":"user";
+  cameraStart();
+}
+
+function stopMediaTracks(stream) {
+  stream.getTracks().forEach(track => {
+    track.stop();
+  });
+}
+
 // carrega imagem de camera quando a janela carregar
 window.addEventListener("load", cameraStart, false);
