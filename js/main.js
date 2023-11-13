@@ -49,6 +49,7 @@ cameraTrigger.onclick = function () {
 cameraVirar.onclick = function () {
   stopMediaTracks(cameraView.srcObject);
   camMode = camMode === "user" ? "environment" : "user";
+  constraints = { video: { facingMode: camMode }, audio: false };
   cameraStart();
 }
 
